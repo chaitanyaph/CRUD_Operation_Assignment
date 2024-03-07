@@ -30,15 +30,14 @@ public class CategoryController {
     private CategoryRepository categoryRepository;
 
     @GetMapping
-    public ResponseEntity<List<Category>> getAllCategories(@RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(categoryRepository.findAll(pageable).getContent());
+    public ResponseEntity<List<Category>> getAllCategories() {
+        
+        return new ResponseEntity<>(categoryRepository.findAll(),HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
-        category.setProducts(new ArrayList<>()); // Initialize empty list
+        category.setProducts(new ArrayList<>()); 
         Category savedCategory = categoryRepository.save(category);
         return new ResponseEntity<>(savedCategory, HttpStatus.OK);
     }
