@@ -18,7 +18,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long category_id;
 
     @Column(nullable = false)
     private String name;
@@ -26,12 +26,12 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();
 
-	public Long getId() {
-		return id;
+	public Long getcategory_id() {
+		return category_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(Long category_id) {
+		this.category_id = category_id;
 	}
 
 	public String getName() {

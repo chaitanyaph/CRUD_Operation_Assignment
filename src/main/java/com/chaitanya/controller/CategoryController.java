@@ -30,8 +30,10 @@ public class CategoryController {
     private CategoryRepository categoryRepository;
 
     @GetMapping
-    public ResponseEntity<List<Category>> getAllCategories() {
+    public ResponseEntity<List<Category>> getAllCategories(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         
+    	Pageable pageable = PageRequest.of(page, size);
         return new ResponseEntity<>(categoryRepository.findAll(),HttpStatus.OK);
     }
 

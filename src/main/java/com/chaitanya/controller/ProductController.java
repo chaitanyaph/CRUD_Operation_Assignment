@@ -55,25 +55,19 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Optional<Product> productOptional = productRepository.findById(id);
-        if (productOptional.isPresent()) {
-            return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return productOptional.map(product -> new ResponseEntity<>(product, HttpStatus.OK))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         Optional<Product> existingProductOptional = productRepository.findById(id);
-        if (existingProductOptional.isPresent()) {
-            Product existingProduct = existingProductOptional.get();
+        return existingProductOptional.map(existingProduct -> {
             existingProduct.setName(product.getName());
-            existingProduct.setPrice(product.getPrice()); // Assuming price is modifiable
+            existingProduct.setPrice(product.getPrice()); 
             Product updatedProduct = productRepository.save(existingProduct);
             return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -86,4 +80,3 @@ public class ProductController {
         }
     }
 }
-
